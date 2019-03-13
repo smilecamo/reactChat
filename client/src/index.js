@@ -29,7 +29,6 @@ function render(){
         </BrowserRouter>
       </Provider>
     )
-    
     ,document.getElementById('root')
   )
 }
