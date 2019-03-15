@@ -8,11 +8,12 @@ import {
   Switch
 } from 'react-router-dom'
 import {Provider} from 'react-redux'
-import App from './App';
-import Auth from './Auth';
+import 'antd-mobile/dist/antd-mobile.css'
 import reducers from './reducers'
+import AuthRoute from './components/authroute'
+import login from './views/login'
+import reg from './views/reg'
 const reduxdevToos = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-
 const store = createStore(reducers, compose(
   applyMiddleware(thunk),
   reduxdevToos
@@ -22,10 +23,13 @@ function render(){
     (
       <Provider store={store}>
         <BrowserRouter>
-          <Switch>
-            <Route path='/' exact component={App} />
-            <Route path='/auth' component={Auth}/>
-          </Switch>
+        {/* <Switch> */}
+        <div>
+          <AuthRoute></AuthRoute>
+          <Route path='/login' component={login}></Route>
+          <Route path="/reg" component={reg}></Route>
+        </div>
+        {/* </Switch> */}
         </BrowserRouter>
       </Provider>
     )
