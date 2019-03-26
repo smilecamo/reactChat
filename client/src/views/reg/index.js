@@ -4,7 +4,6 @@ import {
   List,
   InputItem,
   WhiteSpace,
-  WingBlank,
   Radio,
   Button
 } from 'antd-mobile';
