@@ -1,7 +1,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
+// post请求
 const bodyPerser = require('body-parser')
+// 使用cookie
 var cookieParser = require('cookie-parser')
+// mongo地址
 const db = require('./config/keys').mongoURI
 // 用户路由
 const user = require('./routes/api/user')
