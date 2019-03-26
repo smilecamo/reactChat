@@ -7,6 +7,15 @@ import {
   Radio,
   Button
 } from 'antd-mobile';
+import {connect} from 'react-redux'
+import {register} from '../../redux/user.redux'
+import {
+  Redirect
+}from 'react-router-dom'
+@connect(
+  state => state.user,
+  {register}
+)
 class reg extends React.Component{
   constructor(props){
     super(props);
@@ -15,8 +24,8 @@ class reg extends React.Component{
     this.state={
       type:"genius",
       user:'',
-      password:'',
-      againPassword:''
+      pwd:'',
+      repeqtpwd:''
     }
   }
   // 注册
@@ -29,14 +38,19 @@ class reg extends React.Component{
       [key]:value
     })
   }
+  // 注册
   reg(){
-    console.log(this.state);
+    this.props.register(this.state)
   }
   render(){
     const RadioItem = Radio.RadioItem;
     return(
       <React.Fragment>
+        {/* 跳转 */}
+        {this.props.redirectTo? <Redirect to={this.props.redirectTo}/>:null}
         <Logo />
+        {/* 错误信息 */}
+        {this.props.msg?<p>{this.props.msg}</p>:null}
         <List>
           <InputItem
           placeholder="请输入用户名"
@@ -44,21 +58,21 @@ class reg extends React.Component{
           >用户名</InputItem>
           <InputItem 
           placeholder="请输入密码"
-          type="password"
-          onChange={v=>this.handleChange('password',v)}
+          type="pwd"
+          onChange={v=>this.handleChange('pwd',v)}
           >密码</InputItem>
           <InputItem 
           placeholder="请再次输入密码"
-          type="password"
-          onChange={v=>this.handleChange('againPassword',v)}
+          type="pwd"
+          onChange={v=>this.handleChange('repeqtpwd',v)}
           >确认密码</InputItem>
           <RadioItem 
           checked={this.state.type === 'genius'}
           onChange={()=>this.handleChange('type','genius')}
           >牛人</RadioItem>
           <RadioItem 
-          checked={this.state.type === 'BOSS'}
-          onChange={()=>this.handleChange('type','BOSS')}
+          checked={this.state.type === 'boss'}
+          onChange={()=>this.handleChange('type','boss')}
           >BOSS</RadioItem>
         </List>
         <WhiteSpace></WhiteSpace>

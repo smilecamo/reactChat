@@ -4,28 +4,57 @@ import {
   List,
   InputItem,
   WhiteSpace,
-  WingBlank,
   Button
 } from 'antd-mobile';
-class login extends React.Component{
+import {login} from '../../redux/user.redux'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
+@connect(
+  state=>state.login,
+  {login}
+)
+
+class Login extends React.Component{
   constructor(props){
     super(props);
+    this.state={
+      user:'',
+      pwd:''
+    }
     this.reg = this.reg.bind(this)
+    this.login = this.login.bind(this)
   }
   // 注册
   reg(){
     this.props.history.push('/reg')
   }
+  // 登录
+  login() {
+    // this.props.history.push('/reg')
+    this.props.login(this.state)
+  }
+  // 改变值
+  handleChange(key, value) {
+    this.setState({
+      [key]: value
+    })
+  }
   render(){
     return(
       <React.Fragment>
+        {/* 跳转 */}
+        {this.props.redirectTo? <Redirect to={this.props.redirectTo}/>:null}
         <Logo />
+        {/* 错误信息 */}
+        {this.props.msg?<p>{this.props.msg}</p>:null}
         <List>
-          <InputItem placeholder="请输入用户名">用户名</InputItem>
-          <InputItem placeholder="请输入密码">密码</InputItem>
+          <InputItem placeholder="请输入用户名"
+          onChange={v=>this.handleChange('user',v)}>用户名</InputItem>
+          <InputItem placeholder="请输入密码"
+          onChange={v=>this.handleChange('pwd',v)}>密码</InputItem>
         </List>
         <WhiteSpace></WhiteSpace>
-        <Button type="primary">登录</Button>
+        <Button type="primary" onClick={this.login}>登录</Button>
         <WhiteSpace></WhiteSpace>
         <Button type="primary" onClick={this.reg}>注册</Button>
       </React.Fragment>
@@ -33,4 +62,4 @@ class login extends React.Component{
   }
 }
 
-export default login
+export default Login
