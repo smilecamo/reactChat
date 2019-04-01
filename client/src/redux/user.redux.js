@@ -3,6 +3,7 @@ import {getRedirectPath} from '../util'
 const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const ERROR_MSG = 'ERROR_MSG'
+const LOAD_DATA = 'LOAD_DATA'
 const initState = {
   redirectTo:'', 
   isAuth:false,
@@ -16,10 +17,14 @@ export function user(state = initState, action) {
     case REGISTER_SUCCESS:
     // 注册成功
       return {...state,msg: '',isAuth: true,redirectTo: getRedirectPath(action.payload),...action.payload}
+    // 登录成功
     case LOGIN_SUCCESS:
       return {...state,msg:'',isAuth:true,redirectTo: getRedirectPath(action.payload),...action.payload}
-    case ERROR_MSG:
+    // getInfo
+    case LOAD_DATA:
+      return {...state,...action.payload}
     // 注册失败
+      case ERROR_MSG:
       return {...state,isAuth:false,msg:action.msg}
     default:
       return state
@@ -39,9 +44,17 @@ function registerSuccess(data){
       type: REGISTER_SUCCESS
     }
 }
+// 登录
 function loginSuccess(data){
   return {
     type: LOGIN_SUCCESS,
+    payload:data
+  }
+}
+// 获取用户信息并存储
+export function userinfo(data){
+  return {
+    type: LOAD_DATA,
     payload:data
   }
 }

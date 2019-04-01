@@ -2,6 +2,15 @@
 import React from 'react'
 import axios from 'axios'
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {
+  userinfo
+} from '../../redux/user.redux'
+@withRouter
+@connect(
+  null,
+  {userinfo}
+)
 class AuthRoute extends React.Component{
   componentDidMount(){
     // 定义不需要跳转的路由
@@ -13,15 +22,15 @@ class AuthRoute extends React.Component{
         return null
       }
     // 获取信息
-    axios.get('/user/info').then((res)=>{
+    axios.get('user/info').then((res)=>{
       if(res.status===200){
-        if (res.data.code === 1) {
+        if (res.data.code === 0) {
           // 有登录信息
+          this.props.userinfo(res.data.data)
         } else {
           this.props.history.push('/login')
         }
       }
-
     })
   }
   render(){
@@ -31,4 +40,4 @@ class AuthRoute extends React.Component{
   }
 }
 
-export default withRouter(AuthRoute)
+export default AuthRoute

@@ -6,11 +6,28 @@ const Router = express.Router()
 const model = require('./model')
 // 创建user模型
 const User = model.getModel('user')
+const _filter ={"pwd":0,'__v':0}
 Router.get('/list',(req,res)=>{
   User.remove({},()=>{})
   User.find({},(err,doc)=>{
     res.json(doc)
   })
+})
+// 获取信息
+Router.get('/info',(req,res)=>{
+  const {userid} = req.cookies
+  if(!userid){
+    return res.json({code:1})
+  }
+  User.findOne({_id:userid},_filter,function(err,doc){
+    if(err){
+      return res.json({code:1,msg:'后端出错啦'})
+    }
+    if(doc){
+      return res.json({code:0,data:doc})
+    }
+  })
+  
 })
 // 注册
 Router.post('/register', (req, res) => {
@@ -33,10 +50,11 @@ Router.post('/register', (req, res) => {
 // 登录
 Router.post('/login',(req,res)=>{
   const {user,pwd} = req.body
-  User.findOne({user,pwd:pwdMd5(pwd),},{"pwd":0},(err,doc)=>{
+  User.findOne({user,pwd:pwdMd5(pwd),},_filter,(err,doc)=>{
     if(!doc){
       res.json({code:1,msg:'用户名或密码错误'})
     }else{
+      res.cookie('userid', doc._id)
       res.json({code:0,data:doc})
     }
   })

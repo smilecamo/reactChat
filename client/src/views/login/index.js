@@ -10,7 +10,7 @@ import {login} from '../../redux/user.redux'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 @connect(
-  state=>state.login,
+  state=>state.user,
   {login}
 )
 

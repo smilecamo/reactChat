@@ -28,7 +28,7 @@ class reg extends React.Component{
       repeqtpwd:''
     }
   }
-  // 注册
+  // 登录
   login() {
     this.props.history.push('/login')
   }
