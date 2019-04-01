@@ -37,13 +37,22 @@ Router.post('/register', (req, res) => {
       return res.json({code:1,msg:'用户名重复'})
     }else{
       // 此处用到md5加密
-      User.create({user,type,pwd:pwdMd5(pwd)},(e,d)=>{
+      const userModel = new User({user,type,pwd:pwdMd5(pwd)})
+      userModel.save((e,d)=>{
         if(e){
           return res.json({code:1,msg:'后端出错'})
-        }else{
-          return res.json({code:0})
         }
+        const {user,type,_id} = d
+        res.cookie('userid',_id)
+        return res.json({code:0,data:{user,type,_id}})
       })
+      // User.create({user,type,pwd:pwdMd5(pwd)},(e,d)=>{
+      //   if(e){
+      //     return res.json({code:1,msg:'后端出错'})
+      //   }else{
+      //     return res.json({code:0})
+      //   }
+      // })
     }
   })
 })
