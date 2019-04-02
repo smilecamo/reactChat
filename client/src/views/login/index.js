@@ -50,7 +50,7 @@ class Login extends React.Component{
         <List>
           <InputItem placeholder="请输入用户名"
           onChange={v=>this.handleChange('user',v)}>用户名</InputItem>
-          <InputItem placeholder="请输入密码"
+          <InputItem placeholder="请输入密码" type="password"
           onChange={v=>this.handleChange('pwd',v)}>密码</InputItem>
         </List>
         <WhiteSpace></WhiteSpace>

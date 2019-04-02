@@ -58,12 +58,12 @@ class reg extends React.Component{
           >用户名</InputItem>
           <InputItem 
           placeholder="请输入密码"
-          type="pwd"
+          type = "password"
           onChange={v=>this.handleChange('pwd',v)}
           >密码</InputItem>
           <InputItem 
           placeholder="请再次输入密码"
-          type="pwd"
+          type = "password"
           onChange={v=>this.handleChange('repeqtpwd',v)}
           >确认密码</InputItem>
           <RadioItem 

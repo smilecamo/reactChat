@@ -6,11 +6,27 @@ const Router = express.Router()
 const model = require('./model')
 // 创建user模型
 const User = model.getModel('user')
+// 过滤输出
 const _filter ={"pwd":0,'__v':0}
 Router.get('/list',(req,res)=>{
   User.remove({},()=>{})
   User.find({},(err,doc)=>{
     res.json(doc)
+  })
+})
+// boss完善信息
+Router.post('/updata',(req,res)=>{
+  const {userid} = req.cookies
+  if(!userid){
+    return res.json({code:1})
+  }
+  const body = req.body
+  User.findByIdAndUpdate(userid,body,(err,doc)=>{
+    const data = Object.assign({},{
+      user:doc.user,
+      type:doc.type
+    },body)
+    return res.json({code:0,data})
   })
 })
 // 获取信息
