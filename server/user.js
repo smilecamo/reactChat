@@ -8,10 +8,15 @@ const model = require('./model')
 const User = model.getModel('user')
 // 过滤输出
 const _filter ={"pwd":0,'__v':0}
+// 列表
 Router.get('/list',(req,res)=>{
+  const {type} = req.query
   User.remove({},()=>{})
-  User.find({},(err,doc)=>{
-    res.json(doc)
+  User.find({type},(err,doc)=>{
+    return res.json({
+      code:0,
+      data:doc
+    })
   })
 })
 // boss完善信息
@@ -22,11 +27,18 @@ Router.post('/updata',(req,res)=>{
   }
   const body = req.body
   User.findByIdAndUpdate(userid,body,(err,doc)=>{
-    const data = Object.assign({},{
-      user:doc.user,
-      type:doc.type
-    },body)
-    return res.json({code:0,data})
+  // User.findOneAndUpdate({_id:userid}, body, (err, doc) => {
+
+    if(err){
+      console.log('updata:'+err);
+    }else{
+      const data = Object.assign({}, {
+        user: doc.user,
+        type: doc.type
+      }, body)
+      return res.json({code:0,data})
+    }
+    
   })
 })
 // 获取信息
@@ -56,11 +68,13 @@ Router.post('/register', (req, res) => {
       const userModel = new User({user,type,pwd:pwdMd5(pwd)})
       userModel.save((e,d)=>{
         if(e){
+          console.log(e);
           return res.json({code:1,msg:'后端出错'})
+        }else{
+          const {user,type,_id} = d
+          res.cookie('userid',_id)
+          return res.json({code:0,data:{user,type,_id}})
         }
-        const {user,type,_id} = d
-        res.cookie('userid',_id)
-        return res.json({code:0,data:{user,type,_id}})
       })
       // User.create({user,type,pwd:pwdMd5(pwd)},(e,d)=>{
       //   if(e){
